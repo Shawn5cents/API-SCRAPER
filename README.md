@@ -38,6 +38,26 @@ cp .env.example .env
 # Edit .env with your credentials
 ```
 
+### 🔐 SSH Key Setup (for contributors)
+
+If you need to contribute to this repository, set up SSH authentication:
+
+1. **Generate SSH key** (if not already done):
+```bash
+ssh-keygen -t ed25519 -C "your-email@example.com" -f ~/.ssh/sylectus_repo_key
+```
+
+2. **Add public key to GitHub**:
+   - Copy your public key: `cat ~/.ssh/sylectus_repo_key.pub`
+   - Go to https://github.com/settings/keys
+   - Click "New SSH key" and paste the public key
+
+3. **Configure Git to use SSH**:
+```bash
+git remote set-url origin git@github.com:Shawn5cents/API-SCRAPER.git
+git config --local core.sshCommand "ssh -i ~/.ssh/sylectus_repo_key"
+```
+
 ## ⚙️ Configuration
 
 ### Environment Variables (.env)

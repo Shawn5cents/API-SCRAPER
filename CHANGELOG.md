@@ -2,6 +2,17 @@
 
 All notable changes to the Sylectus Load Board API Scraper project.
 
+## [2.1.1] - 2025-07-07
+
+### 🚀 Added
+- **SSH Key Documentation**: Complete SSH setup guide in `SSH-SETUP.md`
+- **Repository SSH Configuration**: Automated SSH key generation for secure Git operations
+- **Enhanced Documentation**: Updated README and DEPLOYMENT with SSH instructions
+
+### 🔧 Changed
+- **Git Configuration**: Repository configured to use dedicated SSH key
+- **Security**: ED25519 key type for modern encryption standards
+
 ## [2.1.0] - 2025-07-07
 
 ### 🚀 Added

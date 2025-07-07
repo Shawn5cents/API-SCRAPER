@@ -142,6 +142,25 @@ git pull origin main
 systemctl restart sylectus-scraper
 ```
 
+### 🔐 SSH Key Management
+
+For repository access, the deployment includes SSH key setup:
+
+**Generated SSH Key:**
+- Private: `~/.ssh/sylectus_repo_key`
+- Public: `~/.ssh/sylectus_repo_key.pub`
+
+**Add to GitHub:**
+1. Copy public key: `cat ~/.ssh/sylectus_repo_key.pub`
+2. Go to https://github.com/settings/keys
+3. Add as "Sylectus Scraper Repository Key"
+
+**Git Configuration:**
+```bash
+git config --local core.sshCommand "ssh -i ~/.ssh/sylectus_repo_key"
+git remote set-url origin git@github.com:Shawn5cents/API-SCRAPER.git
+```
+
 ### Restart Service
 ```bash
 # Restart service
