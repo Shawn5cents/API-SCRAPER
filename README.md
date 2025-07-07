@@ -1,4 +1,4 @@
-# Sylectus Load Board API Scraper
+#API Scraper
 
 A comprehensive, API-based load board monitoring system that bypasses Cloudflare protection and extracts complete load information including company email addresses.
 
