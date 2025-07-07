@@ -7,6 +7,8 @@ A comprehensive, API-based load board monitoring system that bypasses Cloudflare
 - **Direct API Integration**: Bypasses browser automation by calling Sylectus API endpoints directly
 - **Email Extraction**: Automatically fetches company email addresses from profile pages
 - **Comprehensive Data Parsing**: Extracts 40+ fields including company info, locations, weight, pieces, miles, dimensions
+- **Enhanced Parser**: Fixed miles/weight parsing with accurate column detection
+- **Cloud Deployment**: Automated DigitalOcean deployment with systemd service
 - **Startup Mode**: Shows all current loads on first run to verify functionality
 - **Telegram Integration**: Rich notifications with complete load details
 - **Rate Limiting**: Prevents API abuse with intelligent delays
@@ -78,6 +80,18 @@ ps aux  < /dev/null |  grep api_scraper
 tail -f scraper.log
 ```
 
+### Cloud Deployment
+```bash
+# Deploy to DigitalOcean (automated)
+python3 deploy_digitalocean.py
+
+# Manual SSH access
+ssh -i ~/.ssh/sylectus_key root@YOUR_SERVER_IP
+
+# Check service status
+systemctl status sylectus-scraper
+```
+
 ## 📊 Sample Output
 
 ### Telegram Notification
@@ -142,6 +156,16 @@ python3 debug_scraper.py
 **"Telegram errors"**
 - Verify bot token and chat ID
 - Check rate limiting delays
+
+**"Miles parsing incorrectly"**
+- Enhanced parser now correctly handles column 6 (vehicle + miles) and column 7 (pieces + weight)
+- Miles are limited to 4 digits maximum (9999 miles)
+- Fixed issue where 700-mile routes were showing as 7000+ miles
+
+**"Cloud deployment issues"**
+- Ensure DigitalOcean API token is valid
+- Check SSH key permissions and connectivity
+- Service logs available at `/tmp/scraper.log` on server
 
 ## 📈 Performance
 

@@ -195,53 +195,56 @@ class SylectusLoadParser:
                         load_data['vehicle_type'] = vehicle
                         break
             
-            # Cell 6 usually contains vehicle type + weight
+            # Cell 6: Vehicle type and miles (VEH. SIZE<BR>MILES)
             if cell['index'] == 6:
-                # Extract vehicle type
-                vehicle_patterns = ['CARGO VAN', 'STRAIGHT', 'VAN', 'FLATBED', 'REEFER', 'DRY VAN']
-                for vehicle in vehicle_patterns:
-                    if vehicle in text.upper():
-                        load_data['vehicle_type'] = vehicle
-                        break
-                
-                # Extract weight (numbers after vehicle type)
-                weight_match = re.search(r'([A-Z\s]+)(\d+)', text)
-                if weight_match:
-                    weight = weight_match.group(2)
-                    if int(weight) > 50:  # Weight should be > 50 lbs
-                        load_data['weight'] = f"{weight} lbs"
-                        print(f"✅ Weight extracted: {weight} lbs")
-            
-            # Cell 7 usually contains pieces and miles (separated by <br/>)
-            if cell['index'] == 7:
-                # Parse HTML to get separate values
-                if '<br/>' in html:
-                    parts = html.split('<br/>')
+                # Parse HTML to get vehicle type and miles
+                if '<br/>' in html or '<BR>' in html:
+                    parts = re.split(r'<br/?>', html, flags=re.IGNORECASE)
                     if len(parts) >= 2:
-                        # First part: pieces
-                        pieces_match = re.search(r'(\d+)', parts[0])
-                        if pieces_match:
-                            load_data['pieces'] = pieces_match.group(1)
-                            print(f"✅ Pieces extracted: {load_data['pieces']}")
+                        # First part: vehicle type
+                        vehicle_text = re.sub(r'<[^>]+>', '', parts[0]).strip()
+                        load_data['vehicle_type'] = vehicle_text
+                        print(f"✅ Vehicle type extracted: {vehicle_text}")
                         
-                        # Second part: miles  
-                        miles_match = re.search(r'(\d+)', parts[1])
+                        # Second part: miles (limit to reasonable range)
+                        miles_text = re.sub(r'<[^>]+>', '', parts[1]).strip()
+                        miles_match = re.search(r'^(\d{1,4})', miles_text)  # Max 4 digits (9999 miles)
                         if miles_match:
                             load_data['miles'] = miles_match.group(1)
                             print(f"✅ Miles extracted: {load_data['miles']}")
                 else:
-                    # Fallback: try to split by position if it's concatenated
-                    if text.isdigit() and len(text) >= 2:
-                        # Assume first 1-2 digits are pieces, rest are miles
-                        if len(text) == 2:
-                            load_data['pieces'] = text[0]
-                            load_data['miles'] = text[1:]
-                        elif len(text) == 3:
-                            load_data['pieces'] = text[0]
-                            load_data['miles'] = text[1:]
-                        elif len(text) >= 4:
-                            load_data['pieces'] = text[0]
-                            load_data['miles'] = text[1:]
+                    # Extract vehicle type from single cell
+                    vehicle_patterns = ['CARGO VAN', 'STRAIGHT', 'VAN', 'FLATBED', 'REEFER', 'DRY VAN', 'SPRINTER', 'TRACTOR']
+                    for vehicle in vehicle_patterns:
+                        if vehicle in text.upper():
+                            load_data['vehicle_type'] = vehicle
+                            break
+            
+            # Cell 7: Pieces and weight (PCS<BR>WT)
+            if cell['index'] == 7:
+                # Parse HTML to get pieces and weight
+                if '<br/>' in html or '<BR>' in html:
+                    parts = re.split(r'<br/?>', html, flags=re.IGNORECASE)
+                    if len(parts) >= 2:
+                        # First part: pieces
+                        pieces_text = re.sub(r'<[^>]+>', '', parts[0]).strip()
+                        pieces_match = re.search(r'(\d+)', pieces_text)
+                        if pieces_match:
+                            load_data['pieces'] = pieces_match.group(1)
+                            print(f"✅ Pieces extracted: {load_data['pieces']}")
+                        
+                        # Second part: weight
+                        weight_text = re.sub(r'<[^>]+>', '', parts[1]).strip()
+                        weight_match = re.search(r'(\d+)', weight_text)
+                        if weight_match:
+                            load_data['weight'] = f"{weight_match.group(1)} lbs"
+                            print(f"✅ Weight extracted: {load_data['weight']}")
+                else:
+                    # Single value - assume it's weight
+                    weight_match = re.search(r'(\d+)', text)
+                    if weight_match:
+                        load_data['weight'] = f"{weight_match.group(1)} lbs"
+                        print(f"✅ Weight extracted: {load_data['weight']}")
             
             # Look for dimensions in any cell
             dim_patterns = [

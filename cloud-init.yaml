@@ -1,0 +1,233 @@
+#cloud-config
+# Cloud-init configuration for Sylectus Scraper server
+
+# Update system packages
+package_update: true
+package_upgrade: true
+
+# Install required packages
+packages:
+  - python3
+  - python3-pip
+  - python3-venv
+  - git
+  - curl
+  - wget
+  - htop
+  - nano
+  - unzip
+  - supervisor
+  - nginx
+  - certbot
+  - python3-certbot-nginx
+
+# Create application user
+users:
+  - name: sylectus
+    gecos: Sylectus Scraper Service User
+    shell: /bin/bash
+    sudo: false
+    home: /home/sylectus
+
+# Create directories
+runcmd:
+  # Create application directory
+  - mkdir -p /opt/sylectus-scraper
+  - chown sylectus:sylectus /opt/sylectus-scraper
+  
+  # Clone repository
+  - cd /opt/sylectus-scraper
+  - git clone https://github.com/Shawn5cents/API-SCRAPER.git .
+  - chown -R sylectus:sylectus /opt/sylectus-scraper
+  
+  # Set up Python environment
+  - cd /opt/sylectus-scraper
+  - python3 -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt
+  - chown -R sylectus:sylectus /opt/sylectus-scraper
+  
+  # Install Playwright browsers
+  - su - sylectus -c "cd /opt/sylectus-scraper && source venv/bin/activate && playwright install chromium"
+  
+  # Create systemd service file
+  - |
+    cat > /etc/systemd/system/sylectus-scraper.service << EOF
+    [Unit]
+    Description=Sylectus Load Board Scraper
+    After=network.target
+    Wants=network.target
+    
+    [Service]
+    Type=simple
+    User=sylectus
+    Group=sylectus
+    WorkingDirectory=/opt/sylectus-scraper
+    Environment=PATH=/opt/sylectus-scraper/venv/bin
+    ExecStart=/opt/sylectus-scraper/venv/bin/python api_scraper.py --startup
+    ExecReload=/bin/kill -HUP \$MAINPID
+    Restart=always
+    RestartSec=10
+    StandardOutput=journal
+    StandardError=journal
+    
+    [Install]
+    WantedBy=multi-user.target
+    EOF
+  
+  # Create startup script
+  - |
+    cat > /opt/sylectus-scraper/start_scraper.sh << EOF
+    #!/bin/bash
+    cd /opt/sylectus-scraper
+    source venv/bin/activate
+    python api_scraper.py --startup
+    EOF
+  
+  # Make scripts executable
+  - chmod +x /opt/sylectus-scraper/start_scraper.sh
+  - chown sylectus:sylectus /opt/sylectus-scraper/start_scraper.sh
+  
+  # Create log directory
+  - mkdir -p /var/log/sylectus-scraper
+  - chown sylectus:sylectus /var/log/sylectus-scraper
+  
+  # Enable and start systemd service
+  - systemctl daemon-reload
+  - systemctl enable sylectus-scraper
+  
+  # Create environment file template
+  - |
+    cat > /opt/sylectus-scraper/.env.template << EOF
+    # Telegram Configuration
+    TELEGRAM_BOT_TOKEN=your_bot_token_here
+    TELEGRAM_CHAT_ID=your_chat_id_here
+    
+    # Scraper Settings
+    CHECK_INTERVAL=120
+    
+    # Instructions:
+    # 1. Copy this file to .env
+    # 2. Replace the placeholder values with your actual credentials
+    # 3. Start the service: systemctl start sylectus-scraper
+    EOF
+  
+  # Create management script
+  - |
+    cat > /opt/sylectus-scraper/manage.sh << EOF
+    #!/bin/bash
+    
+    case "\$1" in
+      start)
+        echo "Starting Sylectus Scraper..."
+        systemctl start sylectus-scraper
+        ;;
+      stop)
+        echo "Stopping Sylectus Scraper..."
+        systemctl stop sylectus-scraper
+        ;;
+      restart)
+        echo "Restarting Sylectus Scraper..."
+        systemctl restart sylectus-scraper
+        ;;
+      status)
+        systemctl status sylectus-scraper
+        ;;
+      logs)
+        journalctl -u sylectus-scraper -f
+        ;;
+      setup)
+        echo "Setting up environment..."
+        cp .env.template .env
+        echo "Edit .env file with your credentials, then run: ./manage.sh start"
+        ;;
+      *)
+        echo "Usage: \$0 {start|stop|restart|status|logs|setup}"
+        exit 1
+        ;;
+    esac
+    EOF
+  
+  # Make management script executable
+  - chmod +x /opt/sylectus-scraper/manage.sh
+  - chown sylectus:sylectus /opt/sylectus-scraper/manage.sh
+  
+  # Create monitoring script
+  - |
+    cat > /opt/sylectus-scraper/monitor.sh << EOF
+    #!/bin/bash
+    
+    echo "=== Sylectus Scraper Status ==="
+    echo "Service Status:"
+    systemctl is-active sylectus-scraper
+    echo ""
+    
+    echo "Recent Logs:"
+    journalctl -u sylectus-scraper --since "1 hour ago" -n 20
+    echo ""
+    
+    echo "System Resources:"
+    echo "CPU Usage: \$(top -bn1 | grep load | awk '{printf \"%.2f\", \$(NF-2)}')"
+    echo "Memory Usage: \$(free -h | grep Mem | awk '{print \$3 "/" \$2}')"
+    echo "Disk Usage: \$(df -h / | tail -1 | awk '{print \$3 "/" \$2 " (" \$5 ")"}')"
+    EOF
+  
+  # Make monitoring script executable
+  - chmod +x /opt/sylectus-scraper/monitor.sh
+  - chown sylectus:sylectus /opt/sylectus-scraper/monitor.sh
+  
+  # Create welcome message
+  - |
+    cat > /etc/motd << EOF
+    
+    ===============================================
+    🌊 Sylectus Scraper Server Ready!
+    ===============================================
+    
+    📁 Application: /opt/sylectus-scraper
+    👤 User: sylectus
+    🔧 Management: ./manage.sh
+    📊 Monitoring: ./monitor.sh
+    
+    🚀 Quick Start:
+    1. cd /opt/sylectus-scraper
+    2. ./manage.sh setup
+    3. nano .env (add your credentials)
+    4. ./manage.sh start
+    
+    📋 Useful Commands:
+    - ./manage.sh status    # Check service status
+    - ./manage.sh logs      # View real-time logs
+    - ./monitor.sh          # System overview
+    
+    💡 Need help? Check the README.md file!
+    ===============================================
+    
+    EOF
+
+# Write completion marker
+write_files:
+  - content: |
+      Cloud-init setup completed successfully!
+      
+      Server is ready for Sylectus scraper deployment.
+      
+      Next steps:
+      1. SSH into the server
+      2. Configure environment variables
+      3. Start the scraper service
+      
+      Setup completed at: $(date)
+    path: /opt/sylectus-scraper/SETUP_COMPLETE.txt
+    owner: sylectus:sylectus
+    permissions: '0644'
+
+# Final message
+final_message: |
+  ✅ Sylectus Scraper server setup complete!
+  
+  🔑 SSH Access: ssh root@YOUR_SERVER_IP
+  📁 App Location: /opt/sylectus-scraper
+  🚀 Quick Start: ./manage.sh setup
+  
+  The server is ready for your Sylectus scraper!

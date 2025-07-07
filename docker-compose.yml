@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  sylectus-monitor:
+    build: .
+    container_name: sylectus-monitor
+    restart: unless-stopped
+    environment:
+      # Load environment variables from .env file
+      - SYLECTUS_CORPORATE_ID=${SYLECTUS_CORPORATE_ID}
+      - SYLECTUS_CORPORATE_PASSWORD=${SYLECTUS_CORPORATE_PASSWORD}
+      - SYLECTUS_USERNAME=${SYLECTUS_USERNAME}
+      - SYLECTUS_USER_PASSWORD=${SYLECTUS_USER_PASSWORD}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
+      - CHECK_INTERVAL=${CHECK_INTERVAL:-120}
+      - HEADLESS=${HEADLESS:-true}
+      - MAX_RETRIES=${MAX_RETRIES:-3}
+      - RETRY_DELAY=${RETRY_DELAY:-30}
+    volumes:
+      # Persist data directory
+      - ./data:/app/data
+      # Persist sent items to avoid duplicates
+      - ./sent_items.txt:/app/sent_items.txt
+    ports:
+      # Optional: expose port for future web interface
+      - "8000:8000"
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    # Health check
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import os; exit(0 if os.path.exists('/app/sent_items.txt') else 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# Optional: Add a monitoring service
+  # watchtower:
+  #   image: containrrr/watchtower
+  #   container_name: watchtower
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   command: --interval 30 --cleanup
+  #   restart: unless-stopped
+
+volumes:
+  data:
+    driver: local
+
+networks:
+  default:
+    name: sylectus-network

@@ -1,0 +1,12 @@
+requests==2.31.0
+beautifulsoup4==4.12.2
+python-dotenv==1.0.0
+playwright==1.40.0
+psutil==5.9.6
+tenacity==8.2.3
+aiohttp==3.9.1
+asyncio-throttle==1.0.2
+python-telegram-bot==20.8
+undetected-chromedriver==3.5.5
+selenium==4.18.1
+webdriver-manager==4.0.1

@@ -1,0 +1,390 @@
+<!DOCTYPE html><html lang="en" id="login-page" style="--vh: 10.8px; --zoom: 1.1145510835913315; zoom: 1.11455;"><head><title>Sylectus - Login to Sylectus</title><meta charset="UTF-8"><meta http-equiv="x-ua-compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="/style/bootstrap.min.css" rel="stylesheet"><link href="/style/bootstrap-datetimepicker.css" rel="stylesheet"><link href="/style/bootstrap-toggle.min.css" rel="stylesheet"><link href="/style/dataTables.bootstrap.min.css" rel="stylesheet"><link href="/style/jquery.dataTables.min.css" rel="stylesheet"><link href="/style/responsive.dataTables.min.css" rel="stylesheet"><link href="/style/jquery-ui.min.css" rel="stylesheet"><link href="/style/SylectusMaster.css" rel="stylesheet"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="/js/html5shiv.min.js"></script>
+        <script src="/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-EYV2RR8LL1&amp;cx=c&amp;gtm=457e5710za200&amp;tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104718208~104839054~104839056~104885889~104885891~104908321~104908323"></script><script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-N4W5ZBT"></script><script type="text/javascript" integrity="sha384-4rr7CTymHc64YjTTL6O3ktfsHYI1yJnQdmKv4zFoe+frjXb05MfzzuLLIAgJ/XHs" crossorigin="anonymous" async="" src="https://cdn.amplitude.com/libs/amplitude-8.11.0-min.gz.js"></script><script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/tether.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/moment.js"></script>
+    <script src="/js/bootstrap-datetimepicker.js"></script>
+    <script src="/js/pagescripts.js"></script>
+    <script src="/js/bootstrap-toggle.min.js"></script>
+    <script src="/js/jquery.dataTables.js"></script>
+    <script src="/js/dataTables.bootstrap.min.js"></script>
+    <script src="/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript" src="/js/amplitude.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            default_documentOnLoad();
+            displayServerName('GPS101<br />ES:0.00');
+        });
+        window.onbeforeunload = DisableButtons;
+    </script>
+    
+
+    <style type="text/css">
+
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            font: normal normal normal 14px/24px Roboto;
+            letter-spacing: 0.1px;
+            color: #525252;
+            opacity: 1;
+        }
+
+        img {
+            /* Resizes images on mobile to fit the width of the device */
+            max-width: 100%;             
+        }
+
+        @media only screen and (min-width: 768px) and (max-width: 1023px) {
+            #logo-login{
+                width:100% !important;
+                margin: 0 !important;
+            }
+        }
+
+        @media only screen and (min-width: 355px) and (max-width: 550px) {
+            #small-logo {
+                float: none !important;
+                height: 60px !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
+        @media only screen and (min-width: 551px ) and (max-width: 761px ) {
+            #small-logo {
+                float: none;
+                height: 60px !important;
+                width: 96% !important;
+                margin: 0 0 7% 0 !important;
+                padding: 0 !important;
+            }
+        }
+      
+    </style>
+    <script type="text/javascript">
+
+        function showConfirmationModal() {
+            $("#confirmationModal").modal('show');
+        }
+
+        function resetPassword(mabcode) {
+            var usercode = $("#ctl00_bodyPlaceholder_userList option:selected").val();
+
+            loginc = window.open(
+                '/sendpassword.asp?mabcode=' + mabcode + '&usercode=' + usercode, 'loginc', 'toolbar=0, location=0, directories=0, status=0, menubar=0, scrollbars=0, resizable=0,width=400,height=200,left=' + (window.screen.width - 400) / 2 + ',top=' + (window.screen.height - 200) / 2);
+
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript">
+        function pushButton() {
+            if (window.event.keyCode == 13 && document.getElementById('ctl00_bodyPlaceholder_userLoginButton') !== null) {
+                __doPostBack('ctl00$bodyPlaceholder$userLoginButton', '');
+                }
+        }
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-9515119-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-9515119-2', { 'forceSSL': true });
+        gtag('event', 'timing_complete', { 'name': 'load', 'value': 3, 'event_category': 'ES', 'event_label': document.title });
+    </script>
+    <!-- Google Tag Manager -->
+    <script type="text/javascript">
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-N4W5ZBT');
+    </script>
+    <!-- Walk Me -->
+    <script type="text/javascript"> 
+
+        sessionStorage.setItem("_environment", 'production');
+        sessionStorage.setItem("_amplitudeEnabled", 'True');
+
+        var defaultHeight = 969; /*Default window height for default resolution with 100% */
+        /*This calculates the viewport so it can display it correctly in Desktop and Mobile */
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        document.documentElement.style.setProperty('--zoom', vh / (defaultHeight / 100));
+        window.addEventListener('resize', () => {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            document.documentElement.style.setProperty('--zoom', vh / (defaultHeight / 100));
+        });
+
+
+        $(document).ready(function () {
+            // There is not a CSS pseudoclass for a filled status in a textbox, so I need to check it with this to change the border to black
+            $(".form-control").each(function () {
+                if ($(this).val().length > 0) {
+                    $(this).css('border', '1px solid #292929');
+                }
+                else {
+                    $(this).css('border', '');
+                }
+            });
+
+            $(".form-control").keyup(function () {
+                if ($(this).val().length > 0) {
+                    $(this).css('border', '1px solid #292929');
+                }
+                else {
+                    $(this).css('border', '');
+                }
+            });
+            // End Filled Status 
+
+            /* Removes error red style to the fields*/
+            $(".form-control-error").one('click focus keydown', function () {
+                $(".form-control-error").removeClass("form-control-error")
+                $(".password").val('');
+                $(".password").css('border', '');
+                $(".password").attr('type', 'password');
+            });
+            /*End Removes error style */
+
+            /*Changes the style of select elements with the library Select2 */
+
+            /*This function is to match only at the start of the user in the search box */
+            function matchStart(params, data) {
+                params.term = params.term || '';
+                if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) == 0) {
+                    return data;
+                }
+                return false;
+            }
+            $('select').select2({
+                matcher: function (params, data) {
+                    return matchStart(params, data);
+                },
+            }).on('select2:select', function () {
+                /*Adds the floating label functionality for selects*/
+                if ($('select').select2('val') == 0)
+                    $('label[for="userList"]').addClass('filled');
+                else
+                    $('label[for="userList"]').removeClass('filled');
+
+            });
+
+            /*Hides or shows the search textbox depending if a key is pressed or if the textbox is empty */
+            $(document).on('keyup', '.select2-search__field', function (event) {
+                $(".select2-search").removeClass("search-hidden");
+                if (!$('.select2-search__field').val()) {
+                    $(".select2-search").addClass("search-hidden");
+                }
+            });
+
+            if ($('select').select2('val') == 0)
+                $('label[for="userList"]').addClass('filled');
+            else
+                $('label[for="userList"]').removeClass('filled');
+
+            //adds the blue arrow and changes the direction depending on wether it's open or closed
+            $('b[role="presentation"]').hide();
+            $('.select2-selection__arrow').addClass('dropdown-collapsed');
+
+            $('select').on('select2:open', function (e) {
+                $(".select2-search").addClass('search-hidden');
+                $(".select2-selection__arrow").removeClass("dropdown-collapsed");
+                $(".select2-selection__arrow").addClass('dropdown-expanded');
+            });
+
+            $('select').on('select2:close', function (e) {
+                $('.select2-selection__arrow').removeClass("dropdown-expanded");
+                $('.select2-selection__arrow').addClass('dropdown-collapsed');
+            });
+            /*End Select 2*/
+
+            /*Applies the zoom to the container, footer and blue line so they always look 
+            the same size no matter resolution or display percentage (the 1024px condition is for not including mobile devices) */
+
+            function firefoxConfig(zoom) {
+                let marginHeight = (window.innerHeight - (window.innerHeight * zoom)) / zoom;
+                let marginWidth = (window.innerWidth - (window.innerWidth * zoom)) / zoom;
+                let select2LeftCalc = (window.innerWidth - (328 * zoom)) / 2;
+                let select2TopCalc = (969 - window.innerHeight) / 2.39;
+                $(":root").css('-moz-transform', 'scale(' + zoom + ')');
+                $(":root").css('-moz-transform-origin', '0 0');
+                $(":root").css('marginBottom', -marginHeight);
+                $(":root").css('marginRight', -marginWidth);
+                $("footer").css('position', 'relative');
+                $('select').on('select2:open', function (e) {
+                    $(".select2-dropdown").css('left', (select2LeftCalc / zoom) - select2LeftCalc + 'px');
+                    $(".select2-dropdown").css('top', select2TopCalc + 'px');
+                });
+            }
+
+            if ($(window).width() > 1024) {
+                let zoom = window.innerHeight / defaultHeight;
+                $(":root").css('zoom', zoom);
+                $("#wrapper-login").css('height', defaultHeight * .95);
+                if (navigator.userAgent.search("Firefox") >= 0) {
+                    firefoxConfig(zoom);
+                }
+            }
+            window.addEventListener('resize', () => {
+                if ($(window).width() > 1024) {
+                    let zoom = window.innerHeight / defaultHeight;
+                    $(":root").css('zoom', zoom);
+                    $("#wrapper-login").css('height', defaultHeight * .95);
+                    if (navigator.userAgent.search("Firefox") >= 0) {
+                        firefoxConfig(zoom);
+                    }
+                }
+                else {
+                    $(":root").css('zoom', 1);
+                    $(":root").css('-moz-transform', 'scale(1)');
+                    $("#wrapper-login").css('height', window.innerHeight * .95);
+                }
+             });
+        });
+
+
+
+    </script>
+</head>
+<body id="ctl00_htmlbody">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N4W5ZBT" sandbox height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <script type="text/javascript">parent.document.title ="Sylectus - Login to Sylectus";</script>
+    <form name="aspnetForm" method="post" action="https://www.sylectus.com/Login.aspx?utm_source=website&amp;utm_medium=organic&amp;utm_content=contact%20form&amp;utm_campaign=evergreen&amp;lead_source=Website&amp;lead_source_detail=Organic" onkeypress="javascript:return WebForm_FireDefaultButton(event, 'ctl00_bodyPlaceholder_corpLoginButton')" id="aspnetForm">
+<div>
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" autocomplete="off">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" autocomplete="off">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTM4NjQwODg3OQ9kFgJmD2QWAgIDD2QWAmYPFgIeBmFjdGlvbgWqAWh0dHBzOi8vd3d3LnN5bGVjdHVzLmNvbS9Mb2dpbi5hc3B4P3V0bV9zb3VyY2U9d2Vic2l0ZSZ1dG1fbWVkaXVtPW9yZ2FuaWMmdXRtX2NvbnRlbnQ9Y29udGFjdCUyMGZvcm0mdXRtX2NhbXBhaWduPWV2ZXJncmVlbiZsZWFkX3NvdXJjZT1XZWJzaXRlJmxlYWRfc291cmNlX2RldGFpbD1PcmdhbmljFgJmD2QWBGYPZBYCZg8WAh4HVmlzaWJsZWhkAgIPZBYCZg9kFgICAQ8QZGQWAGRkb+L78iLw9a51wAxlLONnpnj/B/k=" autocomplete="off">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=yBENAAB9Psm6lRYU4s5d_sE-eb19pDiO78lm_t87flaSbkqSgHni3gosLwpmqS-I5K1TP_rnZz19ExbwUa5QYy2j8LY1&amp;t=637109925120000000" type="text/javascript"></script>
+
+
+<script src="/WebResource.axd?d=NEihTYr10dsVcoCO4KEhehPV7RYDA2Hq6gFGLRrXmkJZS6_WfknUun7i8kkDXfIZqf2ehtLrS0uXyA-HiwRYMlCKy6w1&amp;t=637109925120000000" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="C2EE9ABB">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAATbvIvfDW/by3U4dzRZHIYeY9rwYLsRk5GCCQaicGyIicJIlvrYfsH7OGz8+BACAyyhe985vb5+/t2EDvhkMDJ7v11JfXG6R/WGPpRS3DmMB8NQIg4=" autocomplete="off">
+</div>
+        <div id="top-bar">&nbsp;</div>
+        <div id="wrapper-login" style="height: 920.55px;">
+            
+
+<div class="alert-position-all"></div>
+
+    <div class="container" id="container-login">
+        <div class="row col-lg-10 col-lg-offset-1 col-md-12 col-md-offset-0 col-sm-10 col-sm-offset-1 align-items-center">
+            <div class="col-md-6 col-md-offset-3 col-sm-12 col-sm-offset-0 ">
+                <div id="small-logo" class="col-xs-12 hidden-sm hidden-md hidden-lg">  
+                    <img src="images/Sylectus Omnitracs Logo.svg" alt="logo"> 
+                </div>
+                <div id="logo-login" class="hidden-xs">
+                    <img src="images/Sylectus Omnitracs Logo.svg" alt="logo">
+                </div>
+                <div class="box" onkeypress="pushButton();">
+                    
+                        <div class="form-group">                             
+                         <span class="has-float-label">
+                            <input name="ctl00$bodyPlaceholder$corporateIdField" type="text" id="ctl00_bodyPlaceholder_corporateIdField" class="form-control" min="477" max="2147483647" placeholder=" " required="">
+                            <label id="corporateIdLabel" for="ctl00_bodyPlaceholder_corporateIdField">Corporate ID</label>
+                          </span>
+                         </div>
+
+                        <div class="form-group">
+                            <span class="has-float-label">
+                                   <input name="ctl00$bodyPlaceholder$corpPasswordField" type="password" id="ctl00_bodyPlaceholder_corpPasswordField" class="form-control password" placeholder=" " autocomplete="off">
+                                <label for="corpPasswordLabel">Corporate Password</label>
+                            </span>
+                        </div>
+                        <br>
+                        <a id="ctl00_bodyPlaceholder_corpLoginButton" class="btn btn-primary btn-rounded btn-block" href="javascript:__doPostBack('ctl00$bodyPlaceholder$corpLoginButton','')">Continue</a>
+                         <hr>
+                        <p>Not a member? <a href="/sylectus/RequestInfo.aspx">Get started here</a>.</p>
+                        <p><a href="/FindUser.aspx">Forgot Corporate ID?</a></p>
+                        <p><a href="/PrivacyNotice.aspx">Privacy Notice</a></p>
+                    
+                    
+                </div>
+                              
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade modal-syl" id="confirmationModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-focus-on="input:first">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header mheader">
+                    <h3 class="modal-title">Reset Password</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row" id="divConfirmText">
+                            Are you sure you want to reset your password?
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="button" id="btnCancelSave" class="btn button-secondary btn-rounded" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btnConfirm" class="btn button-primary btn-rounded" onclick="resetPassword(0);" data-dismiss="modal">Reset Password</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+
+
+        </div>
+        <footer class="footer">
+            <p>© 2025 Sylectus<span class="hidden-xs">, a division of Omnitracs Canada, Inc. All Rights Reserved</span></p>
+        </footer>
+    
+
+<script type="text/javascript">
+//<![CDATA[
+WebForm_AutoFocus('ctl00_bodyPlaceholder_corporateIdField');//]]>
+</script>
+</form>
+
+
+</body></html>
