@@ -1,0 +1,38 @@
+# Environment variables
+.env
+
+# Session data
+extracted_cookies_*.env
+sent_items.txt
+
+# Log files
+*.log
+scraper.log
+
+# Data files
+load_details_*.json
+raw_html_*.html
+profile_debug_*.html
+
+# Monitoring data
+monitor_*.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.class
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
